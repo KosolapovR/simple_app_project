@@ -57,8 +57,8 @@ export const ProductCardCatalog = ({
       style={styles.container}
       backgroundColor="#fff">
       <Image
-        height={104}
-        width={104}
+        height={110}
+        width={110}
         borderBottomLeftRadius={10}
         borderTopLeftRadius={10}
         fadeDuration={1000}

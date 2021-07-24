@@ -8,7 +8,8 @@ export default function CenterView({children}) {
     <View
       useSafeArea
       style={style.main}
-      padding={20}
+      paddingH-16
+      paddingV-20
       backgroundColor="#FFF"
       flex>
       {children}
