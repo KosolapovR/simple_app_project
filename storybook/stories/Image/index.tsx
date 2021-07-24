@@ -1,14 +1,14 @@
 import React, {useEffect, useState} from 'react';
 import {Image, StyleSheet} from 'react-native';
-import {IProduct} from '../../../src/interfaces/Product';
+import LoaderScreen from 'react-native-ui-lib/loaderScreen';
 
 const styles = StyleSheet.create({
   container: {
     paddingTop: 50,
   },
   tinyLogo: {
-    width: 50,
-    height: 50,
+    width: 100,
+    height: 250,
   },
   logo: {
     width: 66,
@@ -20,20 +20,31 @@ export default function CardImage() {
   const [imgPath, setImgPath] = useState('');
 
   useEffect(() => {
-    const request = async () => {
-      const response = await fetch('http://localhost:8163/product');
-      const data: IProduct[] = response.json();
-      setImgPath(data[0]?.img_src);
-    };
+    console.log('before useeffect');
 
+    async function request() {
+      console.log('inside request');
+
+      setImgPath('products/polo.jpg');
+      console.log('before fetch');
+
+      const response = await fetch('http://localhost:8163/product');
+
+      const body = await response.json();
+
+      console.log('body', body);
+    }
     request();
   }, []);
+  console.log('data');
 
+  if (!imgPath) return <LoaderScreen />;
+  console.log(`http://localhost:8163/images/${imgPath}`);
   return (
     <Image
       style={styles.tinyLogo}
       source={{
-        uri: `http://localhost:8163/images/${imgPath}`,
+        uri: `http://localhost:8163/images/products/polo.jpg`,
       }}
     />
   );
