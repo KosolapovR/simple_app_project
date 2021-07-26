@@ -33,11 +33,13 @@ export const CatalogList = ({products, isGridView = false}: PropsType) => {
           </View>
         ) : (
           <View
-            alignItems="flex-end"
             marginB-16
             marginH-4
             paddingL-16={isGridView}
-            width={isGridView ? windowWidth / 2 - 24 : 'auto'}>
+            width={isGridView ? windowWidth / 2 - 24 : 'auto'}
+            style={{
+              alignItems: 'flex-end',
+            }}>
             <ProductCardCatalog
               product={item}
               onClick={v => v}

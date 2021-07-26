@@ -1,110 +1,95 @@
-/**
- * Sample React Native App
- * https://github.com/facebook/react-native
- *
- * Generated with the TypeScript template
- * https://github.com/react-native-community/react-native-template-typescript
- *
- * @format
- */
-
 import React from 'react';
-import {
-  SafeAreaView,
-  ScrollView,
-  StatusBar,
-  StyleSheet,
-  Text,
-  useColorScheme,
-  View,
-} from 'react-native';
-
-import {
-  Colors,
-  DebugInstructions,
-  Header,
-  LearnMoreLinks,
-  ReloadInstructions,
-} from 'react-native/Libraries/NewAppScreen';
-import {Button} from 'react-native-ui-lib/core';
-import CardImage from './storybook/stories/Image';
-
-const Section: React.FC<{
-  title: string;
-}> = ({children, title}) => {
-  const isDarkMode = useColorScheme() === 'dark';
-  return (
-    <View style={styles.sectionContainer}>
-      <Text
-        style={[
-          styles.sectionTitle,
-          {
-            color: isDarkMode ? Colors.white : Colors.black,
-          },
-        ]}>
-        {title}
-      </Text>
-      <Text
-        style={[
-          styles.sectionDescription,
-          {
-            color: isDarkMode ? Colors.light : Colors.dark,
-          },
-        ]}>
-        {children}
-      </Text>
-    </View>
-  );
-};
+import {StatusBar} from 'react-native';
+import {Provider} from 'react-redux';
+import EncryptedStorage from 'react-native-encrypted-storage';
+import RootStack from './src/navigators/RootStack';
+import {store} from './src/store';
+import {AuthContext} from './src/context/AuthContext';
+import LoaderScreen from 'react-native-ui-lib/loaderScreen';
+import {View} from 'react-native-ui-lib/core';
 
 const App = () => {
-  const isDarkMode = useColorScheme() === 'dark';
+  const [state, dispatch] = React.useReducer(
+    (prevState: any, action: any) => {
+      switch (action.type) {
+        case 'RESTORE_TOKEN':
+          return {
+            ...prevState,
+            userToken: action.token,
+            isLoading: false,
+          };
+        case 'SIGN_IN':
+          return {
+            ...prevState,
+            isSignout: false,
+            userToken: action.token,
+          };
+        case 'SIGN_OUT':
+          return {
+            ...prevState,
+            isSignout: true,
+            userToken: null,
+          };
+      }
+    },
+    {
+      isLoading: true,
+      isSignout: false,
+      userToken: null,
+    },
+  );
 
-  const backgroundStyle = {
-    backgroundColor: isDarkMode ? Colors.darker : Colors.lighter,
-  };
+  React.useEffect(() => {
+    const bootstrapAsync = async () => {
+      const userToken = await EncryptedStorage.getItem('AUTH_TOKEN');
+
+      dispatch({type: 'RESTORE_TOKEN', token: userToken});
+    };
+
+    bootstrapAsync();
+  }, []);
+
+  const authContext = React.useMemo(
+    () => ({
+      signIn: async (data: string) => {
+        try {
+          await EncryptedStorage.setItem('AUTH_TOKEN', data);
+          dispatch({type: 'SIGN_IN', token: data});
+        } catch (error) {}
+      },
+      signOut: async () => {
+        await EncryptedStorage.removeItem('AUTH_TOKEN');
+        await EncryptedStorage.removeItem('AUTH_TOKEN_BEFORE_2FA');
+        dispatch({type: 'SIGN_OUT'});
+      },
+      signUp: async (data: string) => {
+        try {
+          await EncryptedStorage.setItem('AUTH_TOKEN', data);
+          dispatch({type: 'SIGN_IN', token: data});
+        } catch (error) {}
+      },
+    }),
+    [],
+  );
+
+  if (state.isLoading) {
+    return <LoaderScreen />;
+  }
 
   return (
-    <SafeAreaView style={backgroundStyle}>
-      <StatusBar barStyle={isDarkMode ? 'light-content' : 'dark-content'} />
-      <ScrollView
-        contentInsetAdjustmentBehavior="automatic"
-        style={backgroundStyle}>
-        <Header />
-        <View
-          style={{
-            backgroundColor: isDarkMode ? Colors.black : Colors.white,
-          }}>
-          <Button
-            backgroundColor="#30B650"
-            label="Thank u Wix"
-            labelStyle={{fontWeight: '600'}}
-            enableShadow
+    <Provider store={store}>
+      <AuthContext.Provider value={authContext}>
+        <View flex>
+          <StatusBar
+            translucent
+            backgroundColor="#141416"
+            barStyle="light-content"
           />
-          <CardImage />
+          <RootStack userToken={state.userToken} />
         </View>
-      </ScrollView>
-    </SafeAreaView>
+      </AuthContext.Provider>
+    </Provider>
   );
 };
-
-const styles = StyleSheet.create({
-  sectionContainer: {
-    marginTop: 32,
-    paddingHorizontal: 24,
-  },
-  sectionTitle: {
-    fontSize: 24,
-    fontWeight: '600',
-  },
-  sectionDescription: {
-    marginTop: 8,
-    fontSize: 18,
-    fontWeight: '400',
-  },
-  highlight: {
-    fontWeight: '700',
-  },
-});
 
 export default App;
