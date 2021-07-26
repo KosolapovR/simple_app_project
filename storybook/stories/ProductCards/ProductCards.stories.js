@@ -1,5 +1,5 @@
 import {action} from '@storybook/addon-actions';
-import {text} from '@storybook/addon-knobs';
+import {boolean, text} from '@storybook/addon-knobs';
 import {storiesOf} from '@storybook/react-native';
 import React from 'react';
 import CenterView from '../CenterView';
@@ -21,12 +21,13 @@ storiesOf('Product Cards', module)
         ratingVotes: text('ratingVotes', 5),
         price: text('price', 51),
         currency: text('currency', '$'),
-        isLiked: text('isLiked', true),
+        isLiked: boolean('isLiked', true),
         img_src: text(
           'img_src',
           'http://localhost:8163/images/products/polo.jpg',
         ),
       })}
+      isGridView={boolean('isGridView', false)}
     />
   ))
   .add('Order', () => (
@@ -41,12 +42,13 @@ storiesOf('Product Cards', module)
         ratingVotes: text('ratingVotes', 5),
         price: text('price', 51),
         currency: text('currency', '$'),
-        isLiked: text('isLiked', true),
+        isLiked: boolean('isLiked', true),
         img_src: text(
           'img_src',
           'http://localhost:8163/images/products/polo.jpg',
         ),
       })}
+      isGridView={boolean('isGridView', false)}
     />
   ))
   .add('Catalog', () => (
@@ -61,12 +63,13 @@ storiesOf('Product Cards', module)
         ratingVotes: text('ratingVotes', 5),
         price: text('price', 51),
         currency: text('currency', '$'),
-        isLiked: text('isLiked', true),
+        isLiked: boolean('isLiked', true),
         img_src: text(
           'img_src',
           'http://localhost:8163/images/products/polo.jpg',
         ),
       })}
+      isGridView={boolean('isGridView', false)}
       onClick={action('onClick')}
       onLike={action('onLike')}
     />

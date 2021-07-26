@@ -16,4 +16,5 @@ export interface IProduct {
   price: number;
   isLiked: boolean;
   count?: number;
+  badge?: string;
 }

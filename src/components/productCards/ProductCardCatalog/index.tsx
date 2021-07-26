@@ -24,10 +24,32 @@ const styles = StyleSheet.create({
 
     borderRadius: 10,
   },
+  likeBtn: {
+    width: 40,
+    zIndex: 3,
+    shadowColor: '#000',
+    shadowOffset: {
+      width: 0,
+      height: 2,
+    },
+    shadowOpacity: 0.23,
+    shadowRadius: 2.62,
+
+    elevation: 4,
+  },
+  gridContainer: {
+    zIndex: 1,
+    height: 290,
+    width: '100%',
+  },
+  image: {
+    width: '100%',
+  },
 });
 
 type PropsType = {
   product: IProduct;
+  isGridView?: boolean;
   onLike: (v: boolean) => boolean;
   onClick: (v: string) => string;
 };
@@ -43,11 +65,13 @@ export const ProductCardCatalog = ({
     currency,
     name,
     price,
+    badge,
   },
   onLike,
   onClick,
+  isGridView,
 }: PropsType) => {
-  return (
+  const RowViewCard = () => (
     <TouchableOpacity
       onPress={() => onClick(_id)}
       flexS
@@ -110,4 +134,69 @@ export const ProductCardCatalog = ({
       </View>
     </TouchableOpacity>
   );
+
+  const GridViewCard = () => (
+    <TouchableOpacity
+      onPress={() => onClick(_id)}
+      flexS
+      flex
+      style={styles.gridContainer}
+      backgroundColor="#fff">
+      <View>
+        <Image
+          height={184}
+          borderRadius={10}
+          fadeDuration={1000}
+          source={{
+            uri: img_src,
+          }}
+          style={styles.image}
+        />
+        <View style={{position: 'absolute', bottom: -16, right: 0}}>
+          <Button
+            onPress={() => onLike(!isLiked)}
+            iconSource={() => (
+              <Icon
+                name={isLiked ? 'heart-sharp' : 'heart-outline'}
+                size={16}
+                color={isLiked ? '#DB3022' : '#9B9B9B'}
+              />
+            )}
+            round
+            backgroundColor="#fff"
+            style={styles.likeBtn}
+          />
+        </View>
+      </View>
+      <View flex height="100%" padding-8 backgroundColor="transparent">
+        <View flex flexS>
+          <View flex row>
+            {new Array(rating).fill('1').map((_, i) => (
+              <Icon key={i} name="star-sharp" size={16} color="#FFBA49" />
+            ))}
+            {new Array(5 - rating).fill('').map((_, i) => (
+              <Icon key={i} name="star-outline" size={16} color="#9B9B9B" />
+            ))}
+            <Text marginL-4 color="#9B9B9B" style={{bottom: 2}}>
+              ({ratingVotes})
+            </Text>
+          </View>
+          <Text text70 color={'#9B9B9B'}>
+            {name}
+          </Text>
+          <Text text70 style={{fontWeight: 'bold'}}>
+            {category}
+          </Text>
+          <View row spread centerV>
+            <Text text70>
+              {price}
+              {currency}
+            </Text>
+          </View>
+        </View>
+      </View>
+    </TouchableOpacity>
+  );
+
+  return isGridView ? <GridViewCard /> : <RowViewCard />;
 };

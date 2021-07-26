@@ -21,6 +21,7 @@ const styles = StyleSheet.create({
 
 type PropsType = {
   product: IProduct;
+  isGridView?: boolean;
 };
 
 export const ProductCardOrder = ({
