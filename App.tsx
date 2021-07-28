@@ -1,13 +1,30 @@
+import 'react-native-gesture-handler';
 import React from 'react';
 import {StatusBar} from 'react-native';
 import {Provider} from 'react-redux';
 import EncryptedStorage from 'react-native-encrypted-storage';
-import RootStack from './src/navigators/RootStack';
-import {store} from './src/store';
-import {AuthContext} from './src/context/AuthContext';
 import LoaderScreen from 'react-native-ui-lib/loaderScreen';
 import {View} from 'react-native-ui-lib/core';
 
+import RootStack from './src/navigators/RootStack';
+import {store} from './src/store';
+import {AuthContext} from './src/context/AuthContext';
+import {Typography, Colors} from 'react-native-ui-lib';
+
+Colors.loadColors({
+  primary: '#DB3022',
+  gray: '#9B9B9B',
+  success: '#2AA952',
+  background: '#F9F9F9',
+  black: '#222222',
+  white: '#ffffff',
+});
+
+Typography.loadTypographies({
+  headline: {fontSize: 40, fontWeight: 'bold', lineHeight: 60},
+});
+
+//@refresh reset
 const App = () => {
   const [state, dispatch] = React.useReducer(
     (prevState: any, action: any) => {
@@ -82,8 +99,8 @@ const App = () => {
         <View flex>
           <StatusBar
             translucent
-            backgroundColor="#141416"
-            barStyle="light-content"
+            backgroundColor={Colors.background}
+            barStyle="dark-content"
           />
           <RootStack userToken={state.userToken} />
         </View>

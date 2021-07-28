@@ -1,32 +1,56 @@
 import React from 'react';
-import {createStackNavigator} from '@react-navigation/stack';
+import {
+  createStackNavigator,
+  StackNavigationProp,
+} from '@react-navigation/stack';
+import {View, Colors, Button} from 'react-native-ui-lib/core';
+import Icon from 'react-native-vector-icons/Ionicons';
 
 import SignUpScreen from '../screens/SignUpScreen';
 import RecoveryPasswordScreen from '../screens/RecoveryPasswordScreen';
 import SignInScreen from '../screens/SignInScreen';
-import {View, Text} from 'react-native-ui-lib/core';
 
-const Stack = createStackNavigator();
-
-const HeaderLeft = () => {
-  return <Text>a123</Text>;
+export type AuthStackParamList = {
+  SignIn: undefined;
+  SignUp: undefined;
+  RecoveryPassword: undefined;
 };
 
-const basicHeaderOptions = {
+type AuthStackNavigationProp = StackNavigationProp<AuthStackParamList>;
+
+type PropsType = {
+  navigation: AuthStackNavigationProp;
+};
+
+const Stack = createStackNavigator<AuthStackParamList>();
+
+const HeaderLeft = ({navigation}: {navigation: AuthStackNavigationProp}) => {
+  return (
+    <View flex paddingL-4>
+      <Button
+        round
+        backgroundColor="transparent"
+        onPress={() => {
+          navigation.goBack();
+        }}>
+        <Icon size={32} name="chevron-back" color={Colors.black} />
+      </Button>
+    </View>
+  );
+};
+
+const getBasicHeaderOptions = (navigation: AuthStackNavigationProp) => ({
   headerStyle: {
     elevation: 0,
     shadowOffset: {height: 0, width: 0},
-    backgroundColor: '#fff',
+    backgroundColor: Colors.background,
   },
-  headerTitleStyle: {
-    color: '#b6b6b6',
-  },
-  cardStyle: {backgroundColor: 'transparent'},
+  cardStyle: {backgroundColor: Colors.background},
   title: '',
-  headerLeft: () => <HeaderLeft />,
-};
+  headerLeft: () => <HeaderLeft navigation={navigation} />,
+});
 
-export const AuthStack = () => {
+export const AuthStack = ({navigation}: PropsType) => {
   return (
     <View flex>
       <Stack.Navigator
@@ -40,17 +64,17 @@ export const AuthStack = () => {
         <Stack.Screen
           name="SignIn"
           component={SignInScreen}
-          options={() => basicHeaderOptions}
+          options={() => getBasicHeaderOptions(navigation)}
         />
         <Stack.Screen
           name="SignUp"
           component={SignUpScreen}
-          options={basicHeaderOptions}
+          options={() => getBasicHeaderOptions(navigation)}
         />
         <Stack.Screen
           name="RecoveryPassword"
           component={RecoveryPasswordScreen}
-          options={() => basicHeaderOptions}
+          options={() => getBasicHeaderOptions(navigation)}
         />
       </Stack.Navigator>
     </View>

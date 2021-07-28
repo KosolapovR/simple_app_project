@@ -3,8 +3,11 @@ import {MainTabs} from './MainTabs';
 import {AuthStack} from './AuthStack';
 import {NavigationContainer} from '@react-navigation/native';
 import {createNativeStackNavigator} from 'react-native-screens/native-stack';
-
-const NativeStack = createNativeStackNavigator();
+type RootStackParamList = {
+  Main: undefined;
+  Auth: undefined;
+};
+const NativeStack = createNativeStackNavigator<RootStackParamList>();
 
 function RootStack({userToken}: {userToken: string}) {
   return (
