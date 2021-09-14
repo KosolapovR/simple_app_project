@@ -62,6 +62,7 @@
     "eslint": "^7.14.0",
     "husky": "^7.0.0",
     "jest": "^26.6.3",
+    "lint-staged": "^11.1.1",
     "metro-react-native-babel-preset": "^0.64.0",
     "pretty-quick": "^3.1.1",
     "react-dom": "^17.0.1",
@@ -88,5 +89,8 @@
     "setupFiles": [
       "<rootDir>/src/tests/jest-setup.js"
     ]
+  },
+  "lint-staged": {
+    "*.{js,jsx,ts,tsx}": "eslint --cache --fix"
   }
 }

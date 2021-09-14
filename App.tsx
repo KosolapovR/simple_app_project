@@ -102,7 +102,7 @@ const App = () => {
             backgroundColor={Colors.background}
             barStyle="dark-content"
           />
-          <RootStack userToken={state.userToken} />
+          <RootStack />
         </View>
       </AuthContext.Provider>
     </Provider>

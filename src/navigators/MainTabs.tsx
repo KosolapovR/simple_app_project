@@ -17,7 +17,12 @@ export const MainTabs = () => {
   return (
     <SafeAreaView style={{flex: 1}}>
       <View flex>
-        <Tab.Navigator initialRouteName="Dashboard">
+        <Tab.Navigator
+          initialRouteName="Dashboard"
+          tabBarOptions={{
+            inactiveTintColor: '#9B9B9B',
+            activeTintColor: '#DB3022',
+          }}>
           <Tab.Screen
             name="Home"
             component={HomeScreen}

@@ -3,6 +3,9 @@ import AuthForm from '../components/forms/AuthForm';
 import {View, Text, Typography} from 'react-native-ui-lib/core';
 import {StackNavigationProp} from '@react-navigation/stack';
 import {AuthStackParamList} from '../navigators/AuthStack';
+import {postSignIn} from '../features/user';
+import {CredentialsType} from '../types/common';
+import {useAppDispatch} from '../store';
 
 type SignInScreenNavigationProp = StackNavigationProp<
   AuthStackParamList,
@@ -14,8 +17,11 @@ type PropsType = {
 };
 
 function SignInScreen({navigation}: PropsType) {
-  const handleSubmit = (v: {email: string; password: string}) => {
-    console.log(v);
+  const dispatch = useAppDispatch();
+
+  const handleSubmit = (credentials: CredentialsType) => {
+    dispatch(postSignIn(credentials));
+    console.log('credentials', credentials);
   };
   const handleRecoveryPassword = () => {
     navigation.push('RecoveryPassword');
