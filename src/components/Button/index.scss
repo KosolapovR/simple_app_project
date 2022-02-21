@@ -1,0 +1,14 @@
+@import "src/sass/sizes";
+
+.button{
+  background-color: #4CAF50; /* Green */
+  border: none;
+  color: white;
+  padding: $xs $s;
+  text-align: center;
+  text-decoration: none;
+  display: inline-block;
+  font-size: $s;
+  transition: all ease-in 0.3s;
+  cursor: pointer;
+}
