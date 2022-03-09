@@ -11,4 +11,9 @@
   font-size: $s;
   transition: all ease-in 0.3s;
   cursor: pointer;
+
+  &_disabled{
+    opacity: 0.5;
+    cursor: default;
+  }
 }

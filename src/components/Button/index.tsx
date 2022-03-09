@@ -1,16 +1,27 @@
 import React, { ButtonHTMLAttributes } from "react";
-import './index.scss'
+import cn from "classnames";
 
-interface IButtonProps extends ButtonHTMLAttributes<any>{
-  title: string
-  onClick: () => void
+import "./index.scss";
+
+interface IButtonProps extends ButtonHTMLAttributes<any> {
+  title: string;
+  onClick: () => void;
 }
-const Button = React.forwardRef<HTMLButtonElement,IButtonProps>(({title, onClick, disabled, }, ref) => {
-  return (
-    <button ref={ref} className={'button'} disabled={disabled} onClick={onClick}>{title}</button>
-  );
-});
+const Button = React.forwardRef<HTMLButtonElement, IButtonProps>(
+  ({ title, onClick, disabled }, ref) => {
+    return (
+      <button
+        ref={ref}
+        className={cn("button", { button_disabled: disabled })}
+        disabled={disabled}
+        onClick={onClick}
+      >
+        {title}
+      </button>
+    );
+  }
+);
 
-Button.displayName = 'Button'
+Button.displayName = "Button";
 
 export default Button;
